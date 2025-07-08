@@ -1,0 +1,69 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-integration-tests:
+    name: Run Integration Tests for ${{ matrix.adapter }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        adapter: [snowflake, bigquery]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt adapter
+        run: pip install dbt-${{ matrix.adapter }}
+
+      - name: Create BigQuery keyfile
+        if: matrix.adapter == 'bigquery'
+        env:
+          GCP_SA_KEYFILE_JSON: ${{ secrets.GCP_SA_KEYFILE_JSON }}
+        run: |
+          echo "::add-mask::$GCP_SA_KEYFILE_JSON"
+          KEYFILE_PATH="${{ runner.temp }}/gcp_keyfile.json"
+          echo "$GCP_SA_KEYFILE_JSON" > "$KEYFILE_PATH"
+          echo "GCP_SA_KEYFILE=$KEYFILE_PATH" >> $GITHUB_ENV
+        
+      - name: Create Snowflake private key file
+        if: matrix.adapter == 'snowflake'
+        env:
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          echo "::add-mask::$SNOWFLAKE_PRIVATE_KEY"
+          KEY_PATH="${{ runner.temp }}/snowflake_key.p8"
+          echo "$SNOWFLAKE_PRIVATE_KEY" > "$KEY_PATH"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=$KEY_PATH" >> $GITHUB_ENV
+
+      - name: Run tests
+        working-directory: ./integration_tests
+        env:
+          # BigQuery
+          GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT }}
+          GCP_LOCATION: ${{ vars.GCP_LOCATION }}
+
+          # Snowflake
+          SNOWFLAKE_ACCOUNT_NAME: ${{ vars.SNOWFLAKE_ACCOUNT_NAME }}
+          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          
+          # Common
+          DBT_SCHEMA: ${{ vars.DBT_SCHEMA }}
+        run: ./run_integration_tests.sh ${{ matrix.adapter }}

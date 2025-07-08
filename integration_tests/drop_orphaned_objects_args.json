@@ -1,0 +1,7 @@
+{
+    "objects_type": [
+        "base table",
+        "view"
+    ],
+    "dry_run": false
+}

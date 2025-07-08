@@ -1,0 +1,12 @@
+{
+    "dimension_tables": [
+        "test_table"
+    ],
+    "prefix": "MOCK_",
+    "generate_randomly": {
+        "CREATED_AT": "TO_TIMESTAMP( EXTRACT(EPOCH FROM TRY_TO_DATE('2022-01-01')) + FLOOR((uniform(1,10000,random())/10000) * (EXTRACT(EPOCH FROM TRY_TO_DATE('2022-12-31') ) - EXTRACT(EPOCH FROM TRY_TO_DATE('2022-01-01'))))::INT )",
+        "AGE": "((uniform(1,10000,random())/10000)*ABS(99-18))::INT + CASE WHEN 99 > 18 THEN 18 ELSE 99 END",
+        "LOCATION": "(uniform(-90.0, 90.0, random()))::STRING || ';' || (uniform(-180.0, 180.0, random()))::STRING",
+        "REVENUE": "(uniform(0, 1000000, random()) / 1000000.0) * (1000 - 50) + 50"
+    }
+}

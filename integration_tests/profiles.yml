@@ -1,0 +1,32 @@
+RevoltMorphosis_integration_tests:
+  target: snowflake
+  outputs:
+    bigquery:
+      type: bigquery
+      method: service-account
+
+      keyfile: "{{ env_var('GCP_SA_KEYFILE') }}"
+
+      project: "{{ env_var('GOOGLE_CLOUD_PROJECT') }}"
+      location: "{{ env_var('GCP_LOCATION') }}"
+      dataset: "{{ env_var('DBT_SCHEMA') }}"
+      threads: 4
+      job_creation_timeout_seconds: 15
+      job_execution_timeout_seconds: 60
+      job_retries: 1
+      maximum_bytes_billed: 1000000000 # 1 GB
+
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT_NAME') }}"
+
+      user: "{{ env_var('SNOWFLAKE_USERNAME') }}"
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      schema: "{{ env_var('DBT_SCHEMA') }}"
+      threads: 4
+      # client_session_keep_alive: False
+      # query_tag: [anything]

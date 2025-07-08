@@ -1,0 +1,1 @@
+{{ RevoltMorphosis.anonymize_data(ref("test_table"), anonymized_columns=["id"], create_new_column=True, original_value_suffix='_ORIGINAL') }}

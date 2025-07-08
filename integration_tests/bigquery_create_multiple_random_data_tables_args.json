@@ -1,0 +1,12 @@
+{
+    "dimension_tables": [
+        "test_table"
+    ],
+    "prefix": "MOCK_",
+    "generate_randomly": {
+        "CREATED_AT": "CAST(TIMESTAMP_SECONDS(CAST(UNIX_SECONDS(CAST('2022-01-01' AS TIMESTAMP)) + (RAND() * (UNIX_SECONDS(CAST('2022-12-31' AS TIMESTAMP)) - UNIX_SECONDS(CAST('2022-01-01' AS TIMESTAMP)))) AS INT64)) AS DATETIME)",
+        "AGE": "CAST((RAND() * (99 - 18)) + 18 AS INT64)",
+        "LOCATION": "CONCAT(CAST((RAND() * (90 - -90) + -90) AS STRING), ';', CAST((RAND() * (180 - -180) + -180) AS STRING))",
+        "REVENUE": "RAND() * (1000 - 50) + 50"
+    }
+}

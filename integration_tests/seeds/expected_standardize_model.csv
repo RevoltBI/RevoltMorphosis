@@ -1,0 +1,6 @@
+ID,NAME,EMAIL,PHONE_NUMBER,SEX,CREATED_AT,LOCATION,REVENUE,SURROGATE_KEY
+1,"John Doe","john@example.com",123,"M","2023-01-01 00:00:00","40.7128;-74.0060",100.50,"1/John Doe/30/john@example.com/123/M"
+2,"Jane Smith","jane@example.com",321,"F","2023-01-02 00:00:00","34.0522;-118.2437",250.75,"2/Jane Smith/25/jane@example.com/321/F"
+3,"Michael Johnson","michael@example.com",231,,"2023-01-03 00:00:00","51.5074;-0.1278",120.00,"3/Michael Johnson/35/michael@example.com/231/"
+4,,,213,"F","2023-01-04 00:00:00",,50.25,"4//42//213/F"
+5,"Josef Blanc","josef@example.com",,"M","2023-01-05 00:00:00",,75.00,"5/Josef Blanc/23/josef@example.com//M"

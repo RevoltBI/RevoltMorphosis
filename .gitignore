@@ -1,0 +1,17 @@
+
+target/
+dbt_packages/
+logs/
+analyses/
+snapshots/
+.DS_Store
+
+.user.yml
+
+# env files
+.env
+run.bat
+
+# other secrets
+secrets
+integration_tests/package-lock.yml

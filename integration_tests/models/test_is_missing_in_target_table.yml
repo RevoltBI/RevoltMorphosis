@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: test_is_missing_in_target_table
+    columns:
+      - name: id
+        tests:
+          - RevoltMorphosis.is_missing_in_target_table:
+              to: ref('test_table')
+              field: id
+              config:
+                severity: warn

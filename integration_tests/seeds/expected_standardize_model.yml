@@ -1,0 +1,15 @@
+version: 2
+
+seeds:
+  - name: expected_standardize_model
+    config:
+      column_types:
+        ID: "{% if target.type == 'snowflake' %}NUMBER{% elif target.type == 'bigquery' %}INT64{% endif %}"
+        NAME: "{% if target.type == 'snowflake' %}VARCHAR{% elif target.type == 'bigquery' %}STRING{% endif %}"
+        EMAIL: "{% if target.type == 'snowflake' %}VARCHAR{% elif target.type == 'bigquery' %}STRING{% endif %}"
+        PHONE_NUMBER: "{% if target.type == 'snowflake' %}NUMBER{% elif target.type == 'bigquery' %}INT64{% endif %}"
+        SEX: "{% if target.type == 'snowflake' %}VARCHAR{% elif target.type == 'bigquery' %}STRING{% endif %}"
+        CREATED_AT: "{% if target.type == 'snowflake' %}TIMESTAMP_NTZ{% elif target.type == 'bigquery' %}DATETIME{% endif %}"
+        LOCATION: "{% if target.type == 'snowflake' %}VARCHAR{% elif target.type == 'bigquery' %}STRING{% endif %}"
+        REVENUE: "{% if target.type == 'snowflake' %}FLOAT{% elif target.type == 'bigquery' %}FLOAT64{% endif %}"
+        SURROGATE_KEY: "{% if target.type == 'snowflake' %}VARCHAR{% elif target.type == 'bigquery' %}STRING{% endif %}"

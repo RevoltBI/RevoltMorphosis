@@ -1,0 +1,31 @@
+name: 'RevoltMorphosis_integration_tests'
+version: '2.0.2'
+config-version: 2
+
+profile: 'RevoltMorphosis_integration_tests'
+
+docs-paths: ["docs"]
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "dbt_modules"
+
+models:
+  RevoltMorphosis_integration_tests:
+    +materialized: table
+
+flags:
+    send_anonymous_usage_stats: False
+    use_colors: True
+
+dispatch:
+  - macro_namespace: 'RevoltMorphosis'
+    search_order: ['RevoltMorphosis_integration_tests', 'RevoltMorphosis']
+
+on-run-end:
+  - "{{ RevoltMorphosis.drop_transient_models(results) }}"
