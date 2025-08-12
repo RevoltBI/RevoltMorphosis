@@ -113,7 +113,7 @@ FROM {{ ref("input_model") }}
 
 `{{ RevoltMorphosis.standardize_model(ref("input_model"),quote_source_columns=False,columns_mode="upper") }}`
 
-```quote_source_columns=False
+```
 SELECT
   source_column as "SOURCE_COLUMN"
 FROM {{ ref("input_model") }}
