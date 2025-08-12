@@ -57,11 +57,12 @@ Example of the simplest usage you can do for:
 Standardize model macro currently has multiple parameters.
 1. [relation](#relation)
 2. [exclude_columns](#exclude-columns)
-3. [columns_mode](#columns-mode)
-4. [empty_to_null](#empty-to-null)
-5. [surrogate_key_columns](#surrogate-key-columns)
-6. [surrogate_key_delimiter](#surrogate-key-delimiter)
-7. [hash_surrogate_key](#hash-surrogate-key)
+3. [quote_source_columns](#quote-source-columns)
+4. [columns_mode](#columns-mode)
+5. [empty_to_null](#empty-to-null)
+6. [surrogate_key_columns](#surrogate-key-columns)
+7. [surrogate_key_delimiter](#surrogate-key-delimiter)
+8. [hash_surrogate_key](#hash-surrogate-key)
 
 ##### Relation
 Type: Required.
@@ -91,6 +92,33 @@ Output model:
 |----|-------|
 | 1  |       |
 | 2  |       |
+
+##### Quote source columns
+Type: Optional.
+Input type: Boolean
+Default value: False
+Boolean value to define whether you want to quote the source columns.
+
+*Example*
+
+Generated query after using the macro might look like the following examples.
+
+`{{ RevoltMorphosis.standardize_model(ref("input_model"),quote_source_columns=True,columns_mode="upper") }}`
+
+```
+SELECT
+  "source_column" as "SOURCE_COLUMN"
+FROM {{ ref("input_model") }}
+```
+
+`{{ RevoltMorphosis.standardize_model(ref("input_model"),quote_source_columns=False,columns_mode="upper") }}`
+
+```
+SELECT
+  source_column as "SOURCE_COLUMN"
+FROM {{ ref("input_model") }}
+```
+
 
 ##### Columns mode
 Type: Optional.

@@ -1,5 +1,6 @@
 {% macro standardize_model(relation,
                            exclude_columns=['_timestamp'],
+                           quote_source_columns=False,
                            columns_mode='upper',
                            empty_to_null=false,
                            surrogate_key_columns=[],
@@ -47,14 +48,10 @@ SELECT
         {%- endfor -%}
         ) as {{ RevoltMorphosis.__convert_string('surrogate_key', columns_mode) }},
     {%- endif %}
-    {%- for column in array_columns %}
-        {%- if column.is_string() and empty_to_null == true %}
-    NULLIF({{column.column}}, '')
-        {%- else %}
-    {{column.column}}
-        {%- endif -%} 
-        {{ ' as ' ~ RevoltMorphosis.__convert_string(column.column, columns_mode)}}
-        {%- if not loop.last %},{% endif %}
-    {%- endfor %}
+    {%- for column in array_columns -%}
+        {%- set col_expr = adapter.quote(column.column) if quote_source_columns else column.column -%}
+            {{ "NULLIF(" ~ col_expr ~ ", '')" if column.is_string() and empty_to_null else col_expr }}{{ ' as ' ~ RevoltMorphosis.__convert_string(column.column, columns_mode) }}
+        {%- if not loop.last -%},{% endif -%}
+    {%- endfor -%}
 FROM {{ relation }}
 {% endmacro %}
