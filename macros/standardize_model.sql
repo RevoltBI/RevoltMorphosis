@@ -50,7 +50,7 @@ SELECT
     {%- endif %}
     {%- for column in array_columns -%}
         {%- set col_expr = adapter.quote(column.column) if quote_source_columns else column.column -%}
-            {{ "NULLIF(" ~ col_expr ~ ", '')" if column.is_string() and empty_to_null else col_expr }}{{ ' as ' ~ __convert_string(column.column, columns_mode) }}
+            {{ "NULLIF(" ~ col_expr ~ ", '')" if column.is_string() and empty_to_null else col_expr }}{{ ' as ' ~ RevoltMorphosis.__convert_string(column.column, columns_mode) }}
         {%- if not loop.last -%},{% endif -%}
     {%- endfor -%}
 FROM {{ relation }}
